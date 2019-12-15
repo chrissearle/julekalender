@@ -101,7 +101,7 @@ void setMotors()
       else
       {
         bool direction = (random(100) % 2) == 0;
-        motorOn(direction ? LOW : HIGH, random(200, 255));
+        motorOn(direction ? LOW : HIGH, random(127, 255));
       }
       lastLoopMotor = current;
     }
