@@ -34,11 +34,8 @@ unsigned int lightPins[] = {2, 7, 8, 10};
 unsigned long lastLoopLights[] = {0, 0, 0, 0};
 unsigned int lightThresholds[] = {400, 750, 250, 360};
 
-void motorOn(PinStatus direction, int speed)
+void motorOn(int speed)
 {
-  // Currently ignoring direction - it was working but
-  // my motors currently just give a whining noise in
-  // one direction
   if (!motorRunning) {
     digitalWrite(motorInA, LOW);
     analogWrite(motorInB, speed);
@@ -100,8 +97,7 @@ void setMotors()
       }
       else
       {
-        bool direction = (random(100) % 2) == 0;
-        motorOn(direction ? LOW : HIGH, random(127, 255));
+        motorOn(random(127, 255));
       }
       lastLoopMotor = current;
     }
