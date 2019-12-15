@@ -12,7 +12,7 @@ unsigned long lastLoopStrip = 0;
 unsigned int motorInA = 3;
 unsigned int motorInB = 5;
 unsigned long lastLoopMotor = 0;
-unsigned int motorThreshold = 300;
+unsigned int motorThreshold = 3000;
 bool motorRunning = false;
 
 // Servos
@@ -36,33 +36,23 @@ unsigned int lightThresholds[] = {400, 750, 250, 360};
 
 void motorOn(PinStatus direction, int speed)
 {
-  digitalWrite(motorInA, direction);
-  analogWrite(motorInB, speed);
-  motorRunning = true;
+  // Currently ignoring direction - it was working but
+  // my motors currently just give a whining noise in
+  // one direction
+  if (!motorRunning) {
+    digitalWrite(motorInA, LOW);
+    analogWrite(motorInB, speed);
+    motorRunning = true;
+  }
 }
 
 void motorOff()
 {
-  digitalWrite(motorInA, LOW);
-  digitalWrite(motorInB, LOW);
-  motorRunning = false;
-}
-
-void setup()
-{
-  strip.begin();
-
-  for (int i = 0; i < 4; i++)
-  {
-    pinMode(lightPins[i], OUTPUT);
+  if (motorRunning) {
+    digitalWrite(motorInA, LOW);
+    digitalWrite(motorInB, LOW);
+    motorRunning = false;
   }
-
-  pinMode(motorInA, OUTPUT);
-  pinMode(motorInB, OUTPUT);
-
-  motorOff();
-
-  lowerServo.attach(lowerServoPin);
 }
 
 void houseLightsOff()
@@ -104,8 +94,16 @@ void setMotors()
   {
     if (random(100) % 2 == 0)
     {
-      bool direction = (random(100) % 2) == 0;
-      motorOn(direction ? LOW : HIGH, random(255));
+      if (motorRunning)
+      {
+        motorOff();
+      }
+      else
+      {
+        bool direction = (random(100) % 2) == 0;
+        motorOn(direction ? LOW : HIGH, random(200, 255));
+      }
+      lastLoopMotor = current;
     }
   }
 }
@@ -116,7 +114,7 @@ void checkHouseLights()
 
   for (int i = 0; i < 4; i++)
   {
-    if (lastLoopLights[i] - current >= lightThresholds[i])
+    if (current - lastLoopLights[i] >= lightThresholds[i])
     {
       PinStatus pinState = digitalRead(lightPins[i]);
       digitalWrite(lightPins[i], pinState == LOW ? HIGH : LOW);
@@ -129,6 +127,7 @@ void evening()
 {
   setColors(red, green);
   checkHouseLights();
+  setMotors();
 }
 
 void daytime()
@@ -136,6 +135,24 @@ void daytime()
   setColors(blue, yellow);
   houseLightsOff();
   motorOff();
+}
+
+void setup()
+{
+  strip.begin();
+  strip.show();
+
+  for (int i = 0; i < 4; i++)
+  {
+    pinMode(lightPins[i], OUTPUT);
+  }
+
+  pinMode(motorInA, OUTPUT);
+  pinMode(motorInB, OUTPUT);
+
+  motorOff();
+
+  lowerServo.attach(lowerServoPin);
 }
 
 void loop()
@@ -150,4 +167,6 @@ void loop()
   {
     daytime();
   }
+
+  delay(50);
 }
