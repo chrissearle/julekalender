@@ -21,7 +21,7 @@
 #define PIN_MOTORS_INA 3
 #define PIN_MOTORS_INB 5
 #define PIN_SERVO_LOWER 6
-#define PIN_SERVO_UPPER 0
+#define PIN_SERVO_UPPER 9
 #define PIN_SMALL 2
 #define THRESHOLD_LDR 800
 // End of pins and values
@@ -54,11 +54,13 @@ void setup()
                                 PIN_LARGE, MILLIS_LARGE);
   motors = new Motors(PIN_MOTORS_INA, PIN_MOTORS_INB, MILLIS_MOTORS);
   servos = new Servos(PIN_SERVO_LOWER, PIN_SERVO_UPPER);
+
+  servos->setLowerAngle(90);
 }
 
 void loop()
 {
-  servos->setLowerAngle(90);
+  servos->beat();
 
   if ((analogRead(PIN_LDR)) > THRESHOLD_LDR)
   {

@@ -13,7 +13,7 @@ public:
     Servos(int lowerPin, int upperPin);
 
     void setLowerAngle(int angle);
-    void setUpperAngle(int angle);
+    void beat();
 };
 
 #endif
