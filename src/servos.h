@@ -9,8 +9,12 @@ private:
     Servo *lowerServo;
     Servo *upperServo;
 
+    unsigned int thresholdMillis;
+
+    unsigned long lastLoop = 0;
+
 public:
-    Servos(int lowerPin, int upperPin);
+    Servos(int lowerPin, int upperPin, unsigned int threshold);
 
     void setLowerAngle(int angle);
     void beat();

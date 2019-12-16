@@ -12,6 +12,7 @@
 #define MILLIS_LARGE 360
 #define MILLIS_LIGHTSTRIP 500
 #define MILLIS_MOTORS 3000
+#define MILLIS_SERVOS 200
 #define MILLIS_SMALL 400
 #define PIN_CAROUSEL 8
 #define PIN_CURVED_ROOF 7
@@ -53,7 +54,7 @@ void setup()
                                 PIN_CAROUSEL, MILLIS_CAROUSEL,
                                 PIN_LARGE, MILLIS_LARGE);
   motors = new Motors(PIN_MOTORS_INA, PIN_MOTORS_INB, MILLIS_MOTORS);
-  servos = new Servos(PIN_SERVO_LOWER, PIN_SERVO_UPPER);
+  servos = new Servos(PIN_SERVO_LOWER, PIN_SERVO_UPPER, MILLIS_SERVOS);
 
   servos->setLowerAngle(90);
 }
