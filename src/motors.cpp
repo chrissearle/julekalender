@@ -37,32 +37,33 @@ void Motors::night()
                 motorRunning = true;
             }
 
-            if (motorCurrent != motorTarget)
+            lastLoop = current;
+        }
+
+        if (motorCurrent != motorTarget)
+        {
+            digitalWrite(inA, LOW);
+
+            if (motorCurrent < motorTarget)
             {
-                digitalWrite(inA, LOW);
+                motorCurrent = motorCurrent + motorStep;
+
+                if (motorCurrent > motorTarget)
+                {
+                    motorCurrent = motorTarget;
+                }
+            }
+            else
+            {
+                motorCurrent = motorCurrent - motorStep;
 
                 if (motorCurrent < motorTarget)
                 {
-                    motorCurrent = motorCurrent + motorStep;
-
-                    if (motorCurrent > motorTarget)
-                    {
-                        motorCurrent = motorTarget;
-                    }
+                    motorCurrent = motorTarget;
                 }
-                else
-                {
-                    motorCurrent = motorCurrent - motorStep;
-                    if (motorCurrent < motorTarget)
-                    {
-                        motorCurrent = motorTarget;
-                    }
-                }
-
-                analogWrite(inB, motorCurrent);
             }
 
-            lastLoop = current;
+            analogWrite(inB, motorCurrent);
         }
     }
 }
