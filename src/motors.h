@@ -7,7 +7,7 @@ private:
     unsigned int inA;
     unsigned int inB;
 
-    const unsigned int thresholdMillis = 3000;
+    unsigned int thresholdMillis;
 
     unsigned long lastLoop = 0;
 
@@ -20,7 +20,7 @@ private:
     int motorCurrent = 0;
 
 public:
-    Motors(int pinA, int pinB);
+    Motors(int pinA, int pinB, unsigned int threshold);
 
     void day();
     void night();

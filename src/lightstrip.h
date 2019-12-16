@@ -8,7 +8,7 @@ class LightStrip
 private:
     Adafruit_NeoPixel *strip;
 
-    const unsigned int thresholdMillis = 500;
+    unsigned int thresholdMillis;
 
     unsigned long lastLoop = 0;
 
@@ -20,7 +20,7 @@ private:
     void setColors(uint32_t one, uint32_t two);
 
 public:
-    LightStrip(int pin);
+    LightStrip(int pin, unsigned int threshold);
 
     void day();
     void night();

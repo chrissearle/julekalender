@@ -4,8 +4,10 @@
 
 #include "lightstrip.h"
 
-LightStrip::LightStrip(int pin)
+LightStrip::LightStrip(int pin, unsigned int threshold)
 {
+    thresholdMillis = threshold;
+
     strip = new Adafruit_NeoPixel(2, pin, NEO_GRB + NEO_KHZ800);
 
     red = strip->Color(153, 0, 0);

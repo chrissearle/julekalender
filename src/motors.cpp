@@ -2,8 +2,10 @@
 
 #include "motors.h"
 
-Motors::Motors(int pinA, int pinB)
+Motors::Motors(int pinA, int pinB, unsigned int threshold)
 {
+    thresholdMillis = threshold;
+
     inA = pinA;
     inB = pinB;
 
